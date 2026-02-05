@@ -5,6 +5,7 @@ if os.path.isfile("result.xlsx"):
     os.remove("result.xlsx")
 
 WILAYAH_KEY = "WILAYAH"
+PUSKESMAS_KEY = "PUSKESMAS"
 
 source = pd.read_excel("./source.xlsx", sheet_name="SOURCE")
 
@@ -131,6 +132,98 @@ pusdatin_woman = {
     "70+": 16139
 }
 
+puskesmas_data = {
+    # PALARAN
+    "RAWA MAKMUR": "PALARAN",
+    "HANDIL BAKTI": "PALARAN",
+    "SIMPANG PASIR": "PALARAN",
+    # BUKUAN
+    "BUKUAN": "BUKUAN",
+    # BANTUAS
+    "BANTUAS": "BANTUAS",
+    # SAMARINDA KOTA
+    "PELABUHAN": "SAMARINDA KOTA",
+    "KARANG MUMUS": "SAMARINDA KOTA",
+    "PASAR PAGI": "SAMARINDA KOTA",
+    "SUNGAI PINANG LUAR": "SAMARINDA KOTA",
+    "BUGIS": "SAMARINDA KOTA",
+    # BAQA
+    "SUNGAI KELEDANG": "BAQA",
+    "BAQA": "BAQA",
+    "GUNUNG PANJANG": "BAQA",
+    # MANGKUPALAS
+    "MANGKUPALAS": "MANGKUPALAS",
+    "MASJID": "MANGKUPALAS",
+    "KAMPUNG TENUN": "MANGKUPALAS",
+    # AIR PUTIH
+    "AIR PUTIH": "AIR PUTIH",
+    "BUKIT PINANG": "AIR PUTIH",
+    # JUANDA
+    "AIR HITAM": "JUANDA",
+    "GUNUNG KELUA": "JUANDA",
+    # SEGIRI
+    "SIDODADI": "SEGIRI",
+    "DADIMULYA": "SEGIRI",
+    # PASUNDAN
+    "TELUK LERONG ILIR": "PASUNDAN",
+    "JAWA": "PASUNDAN",
+    # SIDOMULYO
+    "SELILI": "SIDOMULYO",
+    "SUNGAI DAMA": "SIDOMULYO",
+    "SIDOMULYO": "SIDOMULYO",
+    "SIDODAMAI": "SIDOMULYO",
+    "PELITA": "SIDOMULYO",
+    # SUNGAI SIRING
+    "SUNGAI SIRING": "SUNGAI SIRING",
+    "TANAH MERAH": "SUNGAI SIRING",
+    "BUDAYA PAMPANG": "SUNGAI SIRING",
+    # SEMPAJA
+    "SEMPAJA SELATAN": "SEMPAJA",
+    "SEMPAJA BARAT": "SEMPAJA",
+    # BENGKURING
+    "SEMPAJA UTARA": "BENGKURING",
+    "SEMPAJA TIMUR": "BENGKURING",
+    # LEMPAKE
+    "LEMPAKE": "LEMPAKE",
+    # LOA BAKUNG
+    "LOA BAKUNG": "LOA BAKUNG",
+    "LOA BUAH": "LOA BAKUNG",
+    # KARANG ASAM
+    "KARANG ASAM ULU": "KARANG ASAM",
+    "KARANG ASAM ILIR": "KARANG ASAM",
+    # LOK BAHU
+    "LOK BAHU": "LOK BAHU",
+    # WONOREJO
+    "TELUK LERONG ULU": "WONOREJO",
+    "KARANG ANYAR": "WONOREJO",
+    # SAMBUTAN
+    "SAMBUTAN": "SAMBUTAN",
+    # SUNGAI KAPIH
+    "SUNGAI KAPIH": "SUNGAI KAPIH",
+    # MAKROMAN
+    "MAKROMAN": "MAKROMAN",
+    "SINDANG SARI": "MAKROMAN",
+    "PULAU ATAS": "MAKROMAN",
+    # TRAUMA CENTER
+    "SENGKOTEK": "TRAUMA CENTER",
+    "SIMPANG TIGA": "TRAUMA CENTER",
+    "TANI AMAN": "TRAUMA CENTER",
+    # HARAPAN BARU
+    "HARAPAN BARU": "HARAPAN BARU",
+    "RAPAK DALAM": "HARAPAN BARU",
+    # REMAJA
+    "TEMINDUNG PERMAI": "REMAJA",
+    "GUNUNG LINGAI": "REMAJA",
+    "BANDARA": "REMAJA",
+    # TEMINDUNG
+    "SUNGAI PINANG DALAM": "TEMINDUNG",
+    "MUGIREJO": "TEMINDUNG"
+}
+
+results_man[PUSKESMAS_KEY] = results_man[WILAYAH_KEY].map(puskesmas_data)
+results_woman[PUSKESMAS_KEY] = results_woman[WILAYAH_KEY].map(puskesmas_data)
+results_union[PUSKESMAS_KEY] = results_union[WILAYAH_KEY].map(puskesmas_data)
+
 def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: dict) -> pd.DataFrame:
     new_cols = {}
     
@@ -142,10 +235,11 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
         else:
             val = source_df.loc[:, start:end].sum(axis=1)
             
-        new_cols[key] = val
+        # new_cols[key] = val
 
         proportion = (val / val.sum()) * pusdatin[key]
-        new_cols[f"{key}_Pr"] = proportion.round(0)
+        # new_cols[f"{key}_Pr"] = proportion.round(0)
+        new_cols[key] = proportion.round(0)
 
     add_calc("0", "0")
     add_calc("0-1", "0", "1")
@@ -193,10 +287,10 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
     
     
     val_15_49w = source_df.loc[:, "15":"49"].sum(axis=1)
-    new_cols["15-49W"] = val_15_49w
+    # new_cols["15-49W"] = val_15_49w
 
     proportion = (val_15_49w / val_15_49w.sum()) * pusdatin["15-49W"]
-    new_cols["15-49W_Pr"] = proportion.round(0)
+    new_cols["15-49W"] = proportion.round(0)
 
     add_calc("30-50", "30", "50")
     add_calc("30-69", "30", "69")
@@ -213,15 +307,25 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
 results_man = process_df(results_man, source_man, pusdatin_man)
 results_woman = process_df(results_woman, source_woman, pusdatin_woman)
 
-idx_results_man = results_man.set_index(WILAYAH_KEY)
-idx_results_woman = results_woman.set_index(WILAYAH_KEY)
-results_union = idx_results_man.add(idx_results_woman, fill_value=0).reset_index()
+def group_sum_puskesmas(results: pd.DataFrame) -> pd.DataFrame:
+    cols = results.columns.tolist()
 
-results_man = results_man.set_index(WILAYAH_KEY)
-results_woman = results_woman.set_index(WILAYAH_KEY)
-results_union = results_union.set_index(WILAYAH_KEY)
+    puskesmas_sum = results.groupby(PUSKESMAS_KEY, as_index=False).sum(numeric_only=True)
+    puskesmas_sum[WILAYAH_KEY] = "TOTAL"
+    return pd.concat([results, puskesmas_sum], ignore_index=True)[cols]
 
-results = pd.concat([results_man, results_woman, results_union], axis=1, keys=["L", "P", "TOTAL"]).sort_index(axis=1, level=1).reset_index()
+
+results_man = group_sum_puskesmas(results_man)
+results_woman = group_sum_puskesmas(results_woman)
+
+
+idx_results_man = results_man.set_index([PUSKESMAS_KEY, WILAYAH_KEY])
+idx_results_woman = results_woman.set_index([PUSKESMAS_KEY, WILAYAH_KEY])
+results_union = idx_results_man.add(idx_results_woman, fill_value=0)
+
+results = pd.concat([idx_results_man, idx_results_woman, results_union], axis=1, keys=["L", "P", "TOTAL"])
+results = results.sort_values(by=[PUSKESMAS_KEY, WILAYAH_KEY])
+results = results.sort_index(level=[0, 1]).sort_index(axis=1, level=1).reset_index()
 
 results.to_excel("result.xlsx")
 print("DONE!")
