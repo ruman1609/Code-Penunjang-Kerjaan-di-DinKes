@@ -221,6 +221,15 @@ puskesmas_data = {
     "MUGIREJO": "TEMINDUNG"
 }
 
+column_orders = [
+    "0", "0-1", "0-2", "0-4", "1-4", "1-2", "2-5", "5-6", "6", "7", "8", "9", 
+    "10", "11", "12", "7-17", "7-15", "7+", "1-12", "10-21", "10-17", "13", 
+    "15", "13-15", "16", "16-18", "13-18", "0-18", "19-64", "0-14", "15-64", 
+    "65+", "21-26", "18-30", "31-45", "46-59", "18-59", "15+", "18+", "15-39", 
+    "40+", "15-59", "15-49", "15-49W", "30-50", "30-69", "45-59", "60+", 
+    "50-59", "60-69", "70+"
+]
+
 results_man[PUSKESMAS_KEY] = results_man[WILAYAH_KEY].map(puskesmas_data)
 results_woman[PUSKESMAS_KEY] = results_woman[WILAYAH_KEY].map(puskesmas_data)
 results_union[PUSKESMAS_KEY] = results_union[WILAYAH_KEY].map(puskesmas_data)
@@ -239,8 +248,15 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
         # new_cols[key] = val
 
         proportion = (val / val.sum()) * pusdatin[key]
-        # new_cols[f"{key}_Pr"] = proportion.apply(np.floor)
-        new_cols[key] = proportion.apply(np.floor)
+
+        rounded_val = proportion.round(0).astype(int)
+        diff = pusdatin[key] - rounded_val.sum()
+        if diff != 0:
+            rounded_val.iloc[rounded_val.argmax()] += diff
+
+        # new_cols[f"{key}_Pr"] = proportion.round(0).astype(int)
+        new_cols[key] = rounded_val
+
 
     add_calc("0", "0")
     add_calc("0-1", "0", "1")
@@ -291,7 +307,11 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
     # new_cols["15-49W"] = val_15_49w
 
     proportion = (val_15_49w / val_15_49w.sum()) * pusdatin["15-49W"]
-    new_cols["15-49W"] = proportion.round(0)
+    rounded_val = proportion.round(0).astype(int)
+    diff = pusdatin["15-49W"] - rounded_val.sum()
+    if diff != 0:
+        rounded_val.iloc[rounded_val.argmax()] += diff
+    new_cols["15-49W"] = rounded_val
 
     add_calc("30-50", "30", "50")
     add_calc("30-69", "30", "69")
@@ -332,7 +352,17 @@ idx_results_woman = results_woman.set_index([PUSKESMAS_KEY, WILAYAH_KEY])
 results_union = idx_results_man.add(idx_results_woman, fill_value=0)
 
 results = pd.concat([idx_results_man, idx_results_woman, results_union], axis=1, keys=["L", "P", "TOTAL"])
-results = results.sort_index(axis=1, level=1).reset_index()
+
+new_column_order = []
+for age in column_orders:
+    for gender in ["L", "P", "TOTAL"]:
+        # Only add if the column actually exists (handles cases like 15-49W which might only be in P)
+        if (gender, age) in results.columns:
+            new_column_order.append((gender, age))
+
+results = results.reindex(columns=new_column_order)
+results = results.reorder_levels([1, 0])
+results = results.reset_index()
 
 results.to_excel("result.xlsx")
 print("DONE!")
