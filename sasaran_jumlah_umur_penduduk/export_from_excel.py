@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import numpy as np
 
 if os.path.isfile("result.xlsx"):
     os.remove("result.xlsx")
@@ -238,8 +239,8 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
         # new_cols[key] = val
 
         proportion = (val / val.sum()) * pusdatin[key]
-        # new_cols[f"{key}_Pr"] = proportion.round(0)
-        new_cols[key] = proportion.round(0)
+        # new_cols[f"{key}_Pr"] = proportion.apply(np.floor)
+        new_cols[key] = proportion.apply(np.floor)
 
     add_calc("0", "0")
     add_calc("0-1", "0", "1")
@@ -308,11 +309,18 @@ results_man = process_df(results_man, source_man, pusdatin_man)
 results_woman = process_df(results_woman, source_woman, pusdatin_woman)
 
 def group_sum_puskesmas(results: pd.DataFrame) -> pd.DataFrame:
-    cols = results.columns.tolist()
-
-    puskesmas_sum = results.groupby(PUSKESMAS_KEY, as_index=False).sum(numeric_only=True)
-    puskesmas_sum[WILAYAH_KEY] = "TOTAL"
-    return pd.concat([results, puskesmas_sum], ignore_index=True)[cols]
+    def add_total(group: pd.DataFrame, puskesmas_name: str):
+        total_row = group.sum(numeric_only=True).to_frame().T
+        total_row[WILAYAH_KEY] = "TOTAL"
+        
+        combined = pd.concat([group, total_row], ignore_index=True)
+        combined[PUSKESMAS_KEY] = puskesmas_name
+        return combined
+    
+    return results.groupby(PUSKESMAS_KEY, group_keys=False, sort=False).apply(
+        lambda g: add_total(g, g.name), 
+        include_groups=False
+    )
 
 
 results_man = group_sum_puskesmas(results_man)
@@ -324,8 +332,7 @@ idx_results_woman = results_woman.set_index([PUSKESMAS_KEY, WILAYAH_KEY])
 results_union = idx_results_man.add(idx_results_woman, fill_value=0)
 
 results = pd.concat([idx_results_man, idx_results_woman, results_union], axis=1, keys=["L", "P", "TOTAL"])
-results = results.sort_values(by=[PUSKESMAS_KEY, WILAYAH_KEY])
-results = results.sort_index(level=[0, 1]).sort_index(axis=1, level=1).reset_index()
+results = results.sort_index(axis=1, level=1).reset_index()
 
 results.to_excel("result.xlsx")
 print("DONE!")
