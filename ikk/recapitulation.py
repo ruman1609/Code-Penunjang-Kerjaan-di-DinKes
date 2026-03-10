@@ -9,7 +9,7 @@ files = glob.glob("./source/*.xlsx")
 
 columns_not_salin = ["NAMA", "RUMAH SAKIT/PUSKESMAS", "KECAMATAN", "SUDAH TERLAYANI/BELUM", "JENIS PELAYANAN", "KETERANGAN"]
 
-df_bersalin = pd.DataFrame(columns=["KECAMATAN", "NAMA IBU MELAHIRKAN", "TANGGAL MELAHIRKAN", "LAHIR HIDUP/MENINGGAL", "PENYEBAB KEMATIAN", "KETERANGAN"])
+df_bersalin = pd.DataFrame(columns=["KECAMATAN", "NAMA IBU MELAHIRKAN", "TANGGAL MELAHIRKAN", "LAHIR HIDUP/MENINGGAL", "PENYEBAB KEMATIAN", "KETERANGAN", "PUSKESMAS"])
 df_hipertensi = pd.DataFrame(columns=columns_not_salin)
 df_diabetes = pd.DataFrame(columns=columns_not_salin)
 df_odgj = pd.DataFrame(columns=columns_not_salin)
@@ -27,8 +27,16 @@ for file in tqdm(files, desc="Processing Excel Files"):
         current_diabetes = pd.read_excel(xls, sheet_name="DIABETES MELLITUS")
         current_odgj = pd.read_excel(xls, sheet_name="ODGJ")
 
-        def clean_df(df):
+        def clean_df(df: pd.DataFrame):
             df.columns = df.columns.str.strip().str.upper()
+            
+            if "NAMA IBU MELAHIRKAN" in df.columns:
+                df = df.dropna(axis=0, subset=["NAMA IBU MELAHIRKAN"], how="any")
+                df = df[df["NAMA IBU MELAHIRKAN"].str.strip() != ""]
+            elif "NAMA PASIEN" in df.columns:
+                df = df.dropna(axis=0, subset=["NAMA PASIEN"])
+                df = df[df["NAMA PASIEN"].str.strip() != ""]
+
             return df.map(lambda x: str(x).strip().upper() if pd.notnull(x) else "")
 
         current_bersalin = clean_df(current_bersalin)
@@ -51,7 +59,7 @@ for file in tqdm(files, desc="Processing Excel Files"):
                 "KECAMATAN": current["KECAMATAN"]
             })
         
-        list_bersalin.append(current_bersalin[["KECAMATAN", "NAMA IBU MELAHIRKAN", "TANGGAL MELAHIRKAN", "LAHIR HIDUP/MENINGGAL", "PENYEBAB KEMATIAN", "KETERANGAN"]])
+        list_bersalin.append(current_bersalin[["KECAMATAN", "NAMA IBU MELAHIRKAN", "TANGGAL MELAHIRKAN", "LAHIR HIDUP/MENINGGAL", "PENYEBAB KEMATIAN", "KETERANGAN", "PUSKESMAS"]])
         list_diabetes.append(map_not_salin(current_diabetes))
         list_hipertensi.append(map_not_salin(current_hipertensi))
         list_odgj.append(map_not_salin(current_odgj))
