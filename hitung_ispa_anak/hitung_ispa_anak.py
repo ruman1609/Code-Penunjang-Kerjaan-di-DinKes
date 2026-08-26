@@ -25,7 +25,7 @@ def parse_age_group(age_str):
     else:
         return ">= 20"
 
-def process_excel_files(file_pattern="*.xlsx", output_filename="Rekap_Kelompok_Umur_Penyakit_v3.xlsx"):
+def process_excel_files(file_pattern="*.xlsx", output_filename="Rekap ISPA Anak.xlsx"):
     if os.path.exists('results'):
         shutil.rmtree('results')
         os.mkdir('results')
