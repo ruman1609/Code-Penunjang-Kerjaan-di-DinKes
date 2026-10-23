@@ -22,8 +22,12 @@ def parse_age_group(age_str):
         return "10-14"
     elif 15 <= thn <= 19:
         return "15-19"
+    elif 20 <= thn <= 45:
+        return "20-45"
+    elif 46 <= thn <= 59:
+        return "46-59"
     else:
-        return ">= 20"
+        return "> 60"
 
 def process_excel_files(file_pattern="*.xlsx", output_filename="Rekap ISPA Anak.xlsx"):
     if os.path.exists('results'):
@@ -64,7 +68,7 @@ def process_excel_files(file_pattern="*.xlsx", output_filename="Rekap ISPA Anak.
         
     combined_df = pd.concat(all_data, ignore_index=True)
     
-    age_categories = ["< 1 tahun", "1-4", "5-9", "10-14", "15-19", ">= 20"]
+    age_categories = ["< 1 tahun", "1-4", "5-9", "10-14", "15-19", "20-45", "46-59", "> 60"]
     
     # --- Sheet 1: Detail Per Penyakit ---
     pivot_counts = combined_df.groupby(['Kode_Penyakit', 'Kelompok_Umur']).size().unstack(fill_value=0)
