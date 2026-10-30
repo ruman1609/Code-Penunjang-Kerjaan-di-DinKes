@@ -19,12 +19,10 @@ def export_pegawai_to_excel():
         query = """
             SELECT 
                 p.nip, 
-                p.nama, 
-                p.uuid_instansi, 
+                p.nama,
                 COALESCE(u.label, 'Dinas Kesehatan') AS nama_instansi
             FROM pegawai p
             LEFT JOIN unitpelaksanateknis_tbl u ON p.uuid_instansi = u.uuid
-            WHERE p.uuid_instansi IS NULL
             ORDER BY p.nama ASC;
         """
         cursor.execute(query)
@@ -43,7 +41,7 @@ def export_pegawai_to_excel():
         title_cell.alignment = Alignment(horizontal="left", vertical="center")
         ws.row_dimensions[1].height = 30
 
-        headers = ["No", "NIP", "Nama Pegawai", "UUID Instansi", "Nama Instansi"]
+        headers = ["No", "NIP", "Nama Pegawai", "Nama Instansi"]
         for col_idx, header in enumerate(headers, start=1):
             ws.cell(row=3, column=col_idx, value=header)
 
@@ -57,7 +55,7 @@ def export_pegawai_to_excel():
         )
 
         ws.row_dimensions[3].height = 24
-        for col_num in range(1, 6):
+        for col_num in range(1, 5):
             cell = ws.cell(row=3, column=col_num)
             cell.fill = header_fill
             cell.font = header_font
@@ -71,26 +69,23 @@ def export_pegawai_to_excel():
         data_font = Font(name="Segoe UI", size=10, color="333333")
 
         start_row = 4
-        for idx, (nip, nama, uuid_instansi, nama_instansi) in enumerate(rows, start=1):
+        for idx, (nip, nama, nama_instansi) in enumerate(rows, start=1):
             current_row = start_row + idx - 1
             ws.row_dimensions[current_row].height = 20
 
             cell_no = ws.cell(row=current_row, column=1, value=idx)
             cell_nip = ws.cell(row=current_row, column=2, value=str(nip) if nip else "-")
             cell_nama = ws.cell(row=current_row, column=3, value=nama)
-            cell_uuid = ws.cell(row=current_row, column=4, value=str(uuid_instansi) if uuid_instansi else "-")
-            cell_instansi = ws.cell(row=current_row, column=5, value=nama_instansi)
+            cell_instansi = ws.cell(row=current_row, column=4, value=nama_instansi)
 
             cell_no.alignment = Alignment(horizontal="center", vertical="center")
             cell_nip.alignment = Alignment(horizontal="center", vertical="center")
             cell_nama.alignment = Alignment(horizontal="left", vertical="center")
-            cell_uuid.alignment = Alignment(horizontal="center", vertical="center")
             cell_instansi.alignment = Alignment(horizontal="left", vertical="center")
 
             cell_nip.number_format = '@'
-            cell_uuid.number_format = '@'
 
-            for cell in (cell_no, cell_nip, cell_nama, cell_uuid, cell_instansi):
+            for cell in (cell_no, cell_nip, cell_nama, cell_instansi):
                 cell.font = data_font
                 cell.border = thin_border
                 if idx % 2 == 0:
