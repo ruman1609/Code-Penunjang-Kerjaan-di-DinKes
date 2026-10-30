@@ -178,4 +178,4 @@ def process_excel_files(
 
 
 if __name__ == "__main__":
-    process_excel_files("excels/*.xlsx")
+    process_excel_files("excels/**/*.xlsx")
