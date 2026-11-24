@@ -25,112 +25,111 @@ results_woman[WILAYAH_KEY] = results_woman[WILAYAH_KEY].str.strip().str.upper()
 results_union[WILAYAH_KEY] = results_union[WILAYAH_KEY].str.strip().str.upper()
 
 pusdatin_man = {
-    "0": 6696,
-    "0-1": 13361,
-    "0-2": 19953,
-    "0-4": 32292,
-    "1-4": 26296,
-    "1-2": 13257,
-    "2-5": 26177,
-    "5-6": 13054,
-    "6": 6508,
-    "7": 6487,
-    "8": 6477,
-    "9": 6476,
-    "10": 6489,
-    "11": 6522,
-    "12": 6590,
-    "7-17": 73856,
-    "7-15": 59530,
-    "7+": 394549,
-    "1-12": 78391,
-    "10-21": 84189,
-    "10-17": 54416,
-    "13": 6695,
-    "15": 6968,
-    "13-15": 20489,
-    "16": 7102,
-    "16-18": 21652,
-    "13-18": 42141,
-    "0-18": 127228,
-    "19-64": 284593,
-    "0-14": 98608,
-    "15-64": 313213,
-    "65+": 28774,
-    "21-26": 44755,
-    "18-30": 95124,
-    "31-45": 100731,
-    "46-59": 76928,
-    "18-59": 272783,
-    "15+": 341987,
-    "18+": 320693,
-    "15-39": 177274,
-    "40+": 164713,
-    "15-59": 294077,
-    "30-50": 95941,
-    "15-49": 95941,
+    "0": 6663,
+    "0-1": 13263,
+    "0-2": 19842,
+    "0-4": 32806,
+    "1-4": 26143,
+    "1-2": 13179,
+    "2-5": 26179,
+    "5-6": 13241,
+    "6": 6605,
+    "7": 6575,
+    "8": 6538,
+    "9": 6497,
+    "10": 6462,
+    "11": 6450,
+    "12": 6481,
+    "7-17": 73123,
+    "7-15": 59086,
+    "7+": 397395,
+    "1-12": 78387,
+    "10-21": 82940,
+    "10-17": 53513,
+    "13": 6565,
+    "15": 6827,
+    "13-15": 20083,
+    "16": 6955,
+    "16-18": 21237,
+    "13-18": 41320,
+    "0-18": 126370,
+    "19-64": 286518,
+    "0-14": 98306,
+    "15-64": 314582,
+    "65+": 30554,
+    "21-26": 44851,
+    "18-30": 95153,
+    "31-45": 100463,
+    "46-59": 78313,
+    "18-59": 273929,
+    "15+": 345136,
+    "18+": 324272,
+    "15-39": 176594,
+    "40+": 168542,
+    "15-59": 294793,
+    "15-49": 95777,
     "15-49W": 0,
     "30-50": 0,
     "30-69": 0,
-    "45-59": 83405,
-    "60+": 47910,
-    "50-59": 52045,
-    "60-69": 32459,
-    "70+": 15451
+    "45-59": 84824,
+    "60+": 50343,
+    "50-59": 53175,
+    "60-69": 33925,
+    "70+": 16418,
 }
 
 pusdatin_woman = {
-    "0": 6422,
-    "0-1": 12820,
-    "0-2": 19151,
-    "0-4": 31677,
-    "1-4": 25255,
-    "1-2": 12729,
-    "2-5": 25114,
-    "5-6": 12472,
-    "6": 6215,
-    "7": 6195,
-    "8": 6196,
-    "9": 6215,
-    "10": 6247,
-    "11": 6299,
-    "12": 6365,
-    "7-17": 70677,
-    "7-15": 57132,
-    "7+": 384737,
-    "1-12": 75244,
-    "10-21": 79810,
-    "10-17": 52071,
-    "13": 6445,
-    "15": 6634,
-    "13-15": 19615,
-    "16": 6731,
-    "16-18": 20421,
-    "13-18": 40036,
-    "0-18": 121702,
-    "19-64": 277959,
-    "0-14": 94647,
-    "15-64": 305014,
-    "65+": 29225,
-    "21-26": 42393,
-    "18-30": 91168,
-    "31-45": 98016,
-    "46-59": 76375,
-    "18-59": 265559,
-    "15+": 334239,
-    "18+": 314060,
-    "15-39": 171107,
-    "40+": 163132,
-    "15-59": 285738,
-    "15-49": 92636,
-    "15-49W": 233694,
-    "30-50": 135074,
-    "30-69": 213625,
-    "45-59": 82633,
-    "60+": 48501,
-    "50-59": 52044,
-    "60-69": 32362,
-    "70+": 16139
+    "0": 6390,
+    "0-1": 12725,
+    "0-2": 19042,
+    "0-4": 31497,
+    "1-4": 25107,
+    "1-2": 12652,
+    "2-5": 25108,
+    "5-6": 12641,
+    "6": 6305,
+    "7": 6279,
+    "8": 6254,
+    "9": 6231,
+    "10": 6214,
+    "11": 6216,
+    "12": 6250,
+    "7-17": 70091,
+    "7-15": 56717,
+    "7+": 388595,
+    "1-12": 75192,
+    "10-21": 78849,
+    "10-17": 51327,
+    "13": 6321,
+    "15": 6532,
+    "13-15": 19273,
+    "16": 6640,
+    "16-18": 20179,
+    "13-18": 39452,
+    "0-18": 121034,
+    "19-64": 280253,
+    "0-14": 94323,
+    "15-64": 306964,
+    "65+": 31446,
+    "21-26": 42236,
+    "18-30": 90867,
+    "31-45": 98312,
+    "46-59": 77777,
+    "18-59": 266956,
+    "15+": 338410,
+    "18+": 318504,
+    "15-39": 170684,
+    "40+": 167726,
+    "15-59": 286862,
+    "15-49": 92598,
+    "15-49W": 233597,
+    "30-50": 135667,
+    "30-69": 217214,
+    "45-59": 84068,
+    "60+": 51548,
+    "50-59": 53265,
+    "60-69": 34211,
+    "70+": 17337,
 }
 
 puskesmas_data = {
@@ -237,24 +236,49 @@ results_union[PUSKESMAS_KEY] = results_union[WILAYAH_KEY].map(puskesmas_data)
 def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: dict) -> pd.DataFrame:
     new_cols = {}
     
-    def add_calc(key, start, end=None):
+    def add_calc(key, start, end=None, mode="proportional"):
         if end is None:
             val = source_df[key].copy()
         elif end == "":
             val = source_df.loc[:, start:].sum(axis=1)
         else:
             val = source_df.loc[:, start:end].sum(axis=1)
-            
-        # new_cols[key] = val
 
-        proportion = (val / val.sum()) * pusdatin[key]
+        target = float(pusdatin[key])
+        n_rows = len(val)
+        if n_rows == 0:
+            raise ValueError(f"source_df has no rows for key='{key}'.")
 
+        if mode == "equal":
+            weights = pd.Series(np.ones(n_rows, dtype=float), index=val.index)
+        elif mode == "proportional":
+            weights = val.astype(float).clip(lower=0.0)
+        elif mode == "inverse_proportional":
+            # Guard against zero/non-positive values so 1/val does not produce inf or NaN
+            weights = pd.Series(
+                np.where(val > 0, 1.0 / val.where(val > 0), 0.0),
+                index=val.index,
+                dtype=float,
+            )
+        else:
+            raise ValueError(
+                f"Unsupported mode='{mode}'. Expected 'equal', 'proportional', or 'inverse_proportional'."
+            )
+
+        total_weight = weights.sum()
+        if total_weight == 0:
+            raise ValueError(
+                f"Total weight is zero for mode='{mode}' and key='{key}'; cannot compute distribution."
+            )
+
+        proportion = (weights / total_weight) * target
         rounded_val = proportion.round(0).astype(int)
-        diff = pusdatin[key] - rounded_val.sum()
-        if diff != 0:
-            rounded_val.iloc[rounded_val.argmax()] += diff
 
-        # new_cols[f"{key}_Pr"] = proportion.round(0).astype(int)
+        # Adjust the largest item so the total matches the rounded target closely/exactly
+        diff = int(round(target)) - int(rounded_val.sum())
+        if diff != 0:
+            rounded_val.iloc[int(rounded_val.argmax())] += diff
+
         new_cols[key] = rounded_val
 
 
