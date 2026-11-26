@@ -236,7 +236,7 @@ results_union[PUSKESMAS_KEY] = results_union[WILAYAH_KEY].map(puskesmas_data)
 def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: dict) -> pd.DataFrame:
     new_cols = {}
     
-    def add_calc(key, start, end=None, mode="proportional"):
+    def add_calc(key, start, end=None):
         if end is None:
             val = source_df[key].copy()
         elif end == "":
@@ -249,6 +249,7 @@ def process_df(results_base: pd.DataFrame, source_df: pd.DataFrame, pusdatin: di
         if n_rows == 0:
             raise ValueError(f"source_df has no rows for key='{key}'.")
 
+        mode = "proportional"
         if mode == "equal":
             weights = pd.Series(np.ones(n_rows, dtype=float), index=val.index)
         elif mode == "proportional":
